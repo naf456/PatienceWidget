@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Patience</string>
+    <string name="configure_label_hint">Add A Message</string>
+    <string name="done">Done</string>
+    <string name="years_label">years</string>
+    <string name="months_label">months</string>
+    <string name="days_label">days</string>
+    <string name="hours_label">hours</string>
+    <string name="minutes_label">minutes</string>
+    <string name="seconds_label">seconds</string>
+    <string name="years_label_short">yrs</string>
+    <string name="months_label_short">mns</string>
+    <string name="days_label_short">dys</string>
+    <string name="hours_label_short">hrs</string>
+    <string name="minutes_label_short">mins</string>
+    <string name="seconds_label_short">secs</string>
+    <string name="zero_zero">00</string>
+    <string name="digit_separator">:</string>
+    <string name="time_display_example">4 days, 2 hours and 34 minutes to go</string>
+    <string name="second_counter_text">0</string>
+</resources>
