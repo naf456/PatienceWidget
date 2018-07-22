@@ -71,7 +71,7 @@ public class PatienceWidgetConfigureActivity extends Activity {
             String countdownMinutesString = countdownMinutesEditText.getText().toString();
             String countdownMessage = countdownMessageEditText.getText().toString();
 
-            countdownHoursString = (!countdownHoursString.equals("")) ? countdownMinutesString : "0";
+            countdownHoursString = (!countdownHoursString.equals("")) ? countdownHoursString : "0";
             countdownMinutesString = (!countdownMinutesString.equals("")) ? countdownMinutesString : "0";
 
             //Build epoch out of user data

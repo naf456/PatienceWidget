@@ -46,7 +46,7 @@ public class SecondsCounterWidget extends AppWidgetProvider {
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
 
-        if(intent.getAction().equals(ACTION_SECONDS_TICK)) {
+        if(intent.getAction().equals(IntervalUpdateService.ACTION_INTERVAL_UPDATE)) {
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
             ComponentName thisAppWidget = new ComponentName(context.getPackageName(), SecondsCounterWidget.class.getName());
             int[] appWidgetIds = appWidgetManager.getAppWidgetIds(thisAppWidget);

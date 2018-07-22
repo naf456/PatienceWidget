@@ -26,6 +26,12 @@ public class PatienceManager {
         preferences.edit().putString(preferenceKey, message).apply();
     }
 
+    public static void deleteWidgetMessage(Context context, int appWidgetId) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String preferenceKey = PREF_WIDGET_MESSAGE + appWidgetId;
+        preferences.edit().remove(preferenceKey).apply();
+    }
+
     public static LocalDateTime fetchWidgetCountdownDateTime(Context context, int appWidgetId){
         long futureEpoch = fetchFutureEpoch(context, appWidgetId);
         return LocalDateTime.ofInstant(Instant.ofEpochSecond(futureEpoch), ZoneId.systemDefault());
@@ -41,5 +47,16 @@ public class PatienceManager {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         String preferenceKey = PREF_FUTURE_EPOCH + appWidgetId;
         preferences.edit().putLong(preferenceKey, futureEpoch).apply();
+    }
+
+    public static void deleteFutureEpoch(Context context, int appWidgetId) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String preferenceKey = PREF_FUTURE_EPOCH + appWidgetId;
+        preferences.edit().remove(preferenceKey).apply();
+    }
+
+    public static void deleteWidgetData(Context context, int appWidgetId) {
+        deleteFutureEpoch(context, appWidgetId);
+        deleteWidgetMessage(context, appWidgetId);
     }
 }

@@ -14,24 +14,16 @@ public class IntervalUpdateService extends Service{
     private static final String PACKAGE_NAME = IntervalUpdateService.class.getPackage().getName();
     public static final String ACTION_INTERVAL_UPDATE = PACKAGE_NAME + ".INTERVAL_UPDATE";
 
-    private static final int MINIMUM_INTERVAL = 400;
-
     private Handler mHandler;
     private WidgetUpdateBroadcasterRunnable widgetUpdateBroadcasterRunnable;
-    
-    private int mBroadcastInterval = 1000;
-
-    public void setBroadcastInterval(int interval){
-        mBroadcastInterval = mBroadcastInterval < MINIMUM_INTERVAL ? MINIMUM_INTERVAL : interval;
-
-    }
 
     @Override
     public void onCreate() {
         super.onCreate();
         mHandler = new Handler();
+        int broadcastInterval = 1000;
         widgetUpdateBroadcasterRunnable = new WidgetUpdateBroadcasterRunnable(
-                getApplicationContext(), mHandler, mBroadcastInterval);
+                getApplicationContext(), mHandler, broadcastInterval);
     }
 
     @Override

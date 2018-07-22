@@ -39,7 +39,7 @@
         <receiver android:name=".seconds_counter.SecondsCounterWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="com.nathanielbennett.android.patience.SECONDS_TICK" />
+                <action android:name="com.nathanielbennett.android.patience.seconds_counter.INTERVAL_UPDATE" />
             </intent-filter>
 
             <meta-data

@@ -59,11 +59,9 @@ public class PatienceWidget extends AppWidgetProvider {
 
     @Override
     public void onDeleted(Context context, int[] appWidgetIds) {
-        /*
         for (int appWidgetId : appWidgetIds) {
-            PatienceWidgetConfigureActivity.deleteTitlePref(context, appWidgetId);
+            PatienceManager.deleteWidgetData(context, appWidgetId);
         }
-        */
     }
 
     @Override
@@ -100,7 +98,6 @@ public class PatienceWidget extends AppWidgetProvider {
                 || intent.getAction().equals(Intent.ACTION_DATE_CHANGED)
                 || intent.getAction().equals(Intent.ACTION_TIME_CHANGED)
                 || intent.getAction().equals(Intent.ACTION_TIMEZONE_CHANGED)) {
-            restartAll(context);
             onUpdate(context, appWidgetManager, appWidgetIds);
         }
 
