@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Patience</string>
+    <string name="app_name">aPatience</string>
     <string name="configure_label_hint">Add A Message</string>
     <string name="done">Done</string>
     <string name="years_label">years</string>

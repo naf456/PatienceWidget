@@ -10,6 +10,7 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import static android.os.Debug.waitForDebugger;
 import static com.nathanielbennett.android.patience.CustomReceivers.*;
 
 public class PatienceBroadcastService extends Service {
@@ -38,6 +39,7 @@ public class PatienceBroadcastService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "Started");
+
         if(intent != null) {
             if(intent.hasExtra("SHUTDOWN")) {
                 boolean shouldShutdown = intent.getBooleanExtra("SHUTDOWN", false);
