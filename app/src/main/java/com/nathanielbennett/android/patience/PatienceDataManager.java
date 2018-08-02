@@ -4,15 +4,39 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.jakewharton.threetenabp.AndroidThreeTen;
+
+import org.threeten.bp.Duration;
 import org.threeten.bp.Instant;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.ZoneId;
 
-public class PatienceManager {
+public class PatienceDataManager {
 
     private static final String PREF_PREFIX_KEY = "patience_";
     private static final String PREF_FUTURE_EPOCH = PREF_PREFIX_KEY + "epoch_";
     private static final String PREF_WIDGET_MESSAGE = PREF_PREFIX_KEY + "widget_message_";
+
+    public static CountdownData getCountdownDataForWidget(Context context, int appWidgetId){
+        AndroidThreeTen.init(context);
+
+        LocalDateTime nowDateTime = LocalDateTime.now();
+        long futureEpoch = fetchFutureEpoch(context, appWidgetId);
+        LocalDateTime futureDateTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(futureEpoch), ZoneId.systemDefault());
+        Duration duration = Duration.between(nowDateTime, futureDateTime);
+
+        boolean isCompleted = duration.isNegative() || duration.isZero();
+
+        long hours = duration.toHours();
+        duration = duration.minusHours(hours);
+
+        long minutes = duration.toMinutes();
+        duration = duration.minusMinutes(minutes);
+
+        long seconds = duration.getSeconds();
+
+        return new CountdownData(isCompleted, hours, minutes, seconds);
+    }
 
     public static String fetchWidgetMessage(Context context, int appWidgetId) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -30,11 +54,6 @@ public class PatienceManager {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         String preferenceKey = PREF_WIDGET_MESSAGE + appWidgetId;
         preferences.edit().remove(preferenceKey).apply();
-    }
-
-    public static LocalDateTime fetchWidgetCountdownDateTime(Context context, int appWidgetId){
-        long futureEpoch = fetchFutureEpoch(context, appWidgetId);
-        return LocalDateTime.ofInstant(Instant.ofEpochSecond(futureEpoch), ZoneId.systemDefault());
     }
 
     public static long fetchFutureEpoch(Context context, int appWidgetId){

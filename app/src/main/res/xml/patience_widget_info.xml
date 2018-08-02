@@ -4,7 +4,7 @@
     android:initialKeyguardLayout="@layout/widget_patience"
     android:initialLayout="@layout/widget_patience"
     android:minHeight="40dp"
-    android:minWidth="250dp"
+    android:minWidth="110dp"
     android:previewImage="@drawable/example_appwidget_preview"
     android:resizeMode="horizontal|vertical"
     android:updatePeriodMillis="1000"

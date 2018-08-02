@@ -1,14 +1,15 @@
 package com.nathanielbennett.android.patience;
 
-import android.app.Activity;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 
 import com.jakewharton.threetenabp.AndroidThreeTen;
+import com.nathanielbennett.android.patiencecomplexlengthoftimepicker.SegmentedDateTimeLengthPicker;
 
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.ZoneId;
@@ -17,12 +18,11 @@ import org.threeten.bp.ZoneId;
 /**
  * The configuration screen for the {@link PatienceWidget PatienceWidget} AppWidget.
  */
-public class PatienceWidgetConfigureActivity extends Activity {
+public class PatienceWidgetConfigureActivity extends AppCompatActivity {
 
     int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 
-    EditText countdownHoursEditText;
-    EditText countdownMinutesEditText;
+    SegmentedDateTimeLengthPicker segmentedDateTimeLengthPicker;
     EditText countdownMessageEditText;
 
     public PatienceWidgetConfigureActivity() {
@@ -40,8 +40,7 @@ public class PatienceWidgetConfigureActivity extends Activity {
 
         setContentView(R.layout.activity_patience_configure);
 
-        countdownHoursEditText = findViewById(R.id.hours);
-        countdownMinutesEditText = findViewById(R.id.minutes);
+        segmentedDateTimeLengthPicker = findViewById(R.id.timePicker);
         countdownMessageEditText = findViewById(R.id.input_countdown_message);
 
         findViewById(R.id.done_btn).setOnClickListener(onDoneClickListener);
@@ -61,31 +60,21 @@ public class PatienceWidgetConfigureActivity extends Activity {
         }
     }
 
+
+
     View.OnClickListener onDoneClickListener = new View.OnClickListener() {
         public void onClick(View v) {
             final Context context = PatienceWidgetConfigureActivity.this;
 
-
-            // When the button is clicked, store the data strings locally
-            String countdownHoursString = countdownHoursEditText.getText().toString();
-            String countdownMinutesString = countdownMinutesEditText.getText().toString();
             String countdownMessage = countdownMessageEditText.getText().toString();
 
-            countdownHoursString = (!countdownHoursString.equals("")) ? countdownHoursString : "0";
-            countdownMinutesString = (!countdownMinutesString.equals("")) ? countdownMinutesString : "0";
-
-            //Build epoch out of user data
-            long hours = Long.parseLong(countdownHoursString);
-            long minutes = Long.parseLong(countdownMinutesString);
-            LocalDateTime futureDateTime = LocalDateTime.now()
-                    .plusHours(hours)
-                    .plusMinutes(minutes);
+            LocalDateTime futureDateTime = segmentedDateTimeLengthPicker.getPickedDateTime();
 
             long futureEpoch = futureDateTime.atZone(ZoneId.systemDefault()).toEpochSecond();
 
             //Save our widget data
-            PatienceManager.saveFutureEpoch(context, appWidgetId, futureEpoch);
-            PatienceManager.saveWidgetMessage(context, appWidgetId, countdownMessage);
+            PatienceDataManager.saveFutureEpoch(context, appWidgetId, futureEpoch);
+            PatienceDataManager.saveWidgetMessage(context, appWidgetId, countdownMessage);
 
             // It is the responsibility of the configuration activity to update the app widget
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
@@ -97,6 +86,18 @@ public class PatienceWidgetConfigureActivity extends Activity {
             resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
             setResult(RESULT_OK, resultValue);
             finish();
+        }
+    };
+
+    View.OnClickListener onPickFromCalender = new View.OnClickListener(){
+        public void onClick(View view) {
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_PICK);
+            intent.addCategory(Intent.CATEGORY_APP_CALENDAR);
+
+            int requestCode = 1;
+
+            startActivityForResult(intent, requestCode);
         }
     };
 }

@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">PatienceComplexLengthOfTimePicker</string>
+    <string name="contentDesc_clear_dateTimeSelector">Clear Date/Time selector section</string>
+</resources>

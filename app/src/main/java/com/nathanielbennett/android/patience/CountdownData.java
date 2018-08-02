@@ -2,25 +2,41 @@ package com.nathanielbennett.android.patience;
 
 public class CountdownData {
 
-    private String hoursLeft;
-    private String minutesLeft;
-    private String secondsLeft;
+    private boolean completed;
+    private long yearsLeft;
+    private long monthsLeft;
+    private long weeksLeft;
+    private long daysLeft;
+    private long hoursLeft;
+    private long minutesLeft;
+    private long secondsLeft;
 
-    public CountdownData(long hoursLeft, long minutesLeft, long secondsLeft) {
-        this.hoursLeft = String.valueOf(hoursLeft);
-        this.minutesLeft = String.valueOf(minutesLeft);
-        this.secondsLeft = String.valueOf(secondsLeft);
+    public CountdownData(boolean completed, long hoursLeft, long minutesLeft, long secondsLeft) {
+        this.completed = completed;
+        this.hoursLeft = hoursLeft;
+        this.minutesLeft = minutesLeft;
+        this.secondsLeft = secondsLeft;
     }
 
-    public String getHoursLeft() {
+    public long getYearsLeft() { return yearsLeft; }
+
+    public long getMonthsLeft() { return monthsLeft; }
+
+    public long getWeeksLeft() { return weeksLeft; }
+
+    public long getDaysLeft() { return daysLeft; }
+
+    public long getHoursLeft() {
         return hoursLeft;
     }
 
-    public String getMinutesLeft() {
+    public long getMinutesLeft() {
         return minutesLeft;
     }
 
-    public String getSecondsLeft() {
+    public long getSecondsLeft() {
         return secondsLeft;
     }
+
+    public boolean isCompleted() { return completed; }
 }

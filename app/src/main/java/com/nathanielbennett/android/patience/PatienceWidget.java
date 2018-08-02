@@ -7,44 +7,25 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
 
-import com.jakewharton.threetenabp.AndroidThreeTen;
-
-import org.threeten.bp.Duration;
-import org.threeten.bp.LocalDateTime;
-
 import static com.nathanielbennett.android.patience.CustomReceivers.*;
 
 public class PatienceWidget extends AppWidgetProvider {
 
-    public static CountdownData GetCountdownDataForWidget(Context context, int appWidgetId){
-        AndroidThreeTen.init(context);
-        LocalDateTime nowDateTime = LocalDateTime.now();
-        LocalDateTime futureDateTime = PatienceManager.fetchWidgetCountdownDateTime(context, appWidgetId);
-        Duration duration = Duration.between(nowDateTime, futureDateTime);
-
-        long hours = duration.toHours();
-        duration = duration.minusHours(hours);
-
-        long minutes = duration.toMinutes();
-        duration = duration.minusMinutes(minutes);
-
-        long seconds = duration.getSeconds();
-
-        return new CountdownData(hours, minutes, seconds);
-    }
-
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
 
-        // Construct the RemoteViews object
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_patience);
+        CountdownData countdown = PatienceDataManager.getCountdownDataForWidget(context, appWidgetId);
+        RemoteViews views;
 
-        CountdownData countdownData = GetCountdownDataForWidget(context, appWidgetId);
-        String message = PatienceManager.fetchWidgetMessage(context, appWidgetId);
-
-        views.setTextViewText(R.id.hours, countdownData.getHoursLeft());
-        views.setTextViewText(R.id.minutes, countdownData.getMinutesLeft());
-        views.setTextViewText(R.id.countdown_message, message);
+        if(countdown.isCompleted()){
+            views = new RemoteViews(context.getPackageName(), R.layout.widget_patience_completed);
+            views.setTextViewText(R.id.countdown_message, PatienceDataManager.fetchWidgetMessage(context,appWidgetId));
+        } else {
+            views = new RemoteViews(context.getPackageName(), R.layout.widget_patience);
+            views.setTextViewText(R.id.hours, String.valueOf(countdown.getHoursLeft()));
+            views.setTextViewText(R.id.minutes, String.valueOf(countdown.getMinutesLeft()));
+            views.setTextViewText(R.id.countdown_message, PatienceDataManager.fetchWidgetMessage(context, appWidgetId));
+        }
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
@@ -60,7 +41,7 @@ public class PatienceWidget extends AppWidgetProvider {
     @Override
     public void onDeleted(Context context, int[] appWidgetIds) {
         for (int appWidgetId : appWidgetIds) {
-            PatienceManager.deleteWidgetData(context, appWidgetId);
+            PatienceDataManager.deleteWidgetData(context, appWidgetId);
         }
     }
 
